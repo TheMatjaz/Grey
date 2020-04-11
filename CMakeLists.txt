@@ -15,8 +15,8 @@ endif ()
 # Unless specified, use 64 bits.
 if (NOT GREY_UINTBITS)
     set(GREY_UINTBITS 64)
-    add_compile_definitions(GREY_UINTBITS=${GREY_UINTBITS})
 endif ()
+add_compile_definitions(GREY_UINTBITS=${GREY_UINTBITS})
 
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -56,3 +56,26 @@ set(TEST_FILES tst/test.c tst/atto/atto.c)
 add_library("grey${BITS}" SHARED ${LIB_FILES})
 add_library("greystatic${BITS}" STATIC ${LIB_FILES})
 add_executable("test_grey${BITS}" ${LIB_FILES} ${TEST_FILES})
+
+# Doxygen documentation builder
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+    # Cmake's wrapper of Doxygen, constructing a doxyfile from the
+    # DOXYGEN_* variables, which are mapped to the Doxygen variables.
+    set(DOXYGEN_GENERATE_HTML YES)
+    set(DOXYGEN_GENERATE_MAN YES)
+    set(DOXYGEN_JAVADOC_AUTOBRIEF YES)
+    set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_C YES)
+    set(DOXYGEN_SORT_MEMBER_DOCS NO)
+    set(DOXYGEN_ALIASES license="**License:**")
+    set(DOXYGEN_USE_MDFILE_AS_MAINPAGE README.md)
+    doxygen_add_docs(doxygen
+            ALL # Build doxygen on make-all
+            # List of input files for Doxygen
+            ${PROJECT_SOURCE_DIR}/inc/grey.h
+            ${PROJECT_SOURCE_DIR}/LICENSE.md
+            ${PROJECT_SOURCE_DIR}/README.md
+            ${PROJECT_SOURCE_DIR}/CHANGELOG.md)
+else (DOXYGEN_FOUND)
+    message(WARNING "Doxygen not found. Cannot generate documentation.")
+endif (DOXYGEN_FOUND)

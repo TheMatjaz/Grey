@@ -6,10 +6,28 @@
  * @license BSD 3-clause license.
  */
 
-#include "test.h"
+#include "grey.h"
 #include "atto.h"
 #include <stdio.h>
 #include <inttypes.h>
+
+static void test_max_and_print(void)
+{
+    printf("Grey uintbits: %d\n", GREY_UINTBITS);
+    printf("Grey max: %" GREY_FMT "\n", GREY_MAX);
+    printf("Grey max hex: 0x%" GREY_FMTx "\n", GREY_MAX);
+    printf("Grey max HEX: 0x%" GREY_FMTX "\n", GREY_MAX);
+    grey_code_t my_code = grey_to(42);
+    printf("Int %u "
+           "= Grey dec %" GREY_FMT
+           " = Grey lowercase hex 0x%" GREY_FMTx
+           " = Grey uppercase hex 0x%" GREY_FMTX "\n",
+           42, my_code, my_code, my_code);
+
+    grey_int_t x = 0;
+    x--;
+    atto_eq(GREY_MAX, x);
+}
 
 static void test_to_grey(void)
 {
@@ -99,6 +117,7 @@ static void test_decrement(void)
 
 int main(void)
 {
+    test_max_and_print();
     test_to_grey();
     test_from_grey();
     test_increment();

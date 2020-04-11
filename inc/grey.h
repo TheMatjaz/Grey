@@ -14,9 +14,11 @@ extern "C"
 {
 #endif
 
+/** Version of the grey.h API using semantic versioning. */
 #define GREY_VERSION "1.0.0"
 
 #include <stdint.h>
+#include <inttypes.h>
 
 /**
  * @property GREY_UINTBITS
@@ -49,23 +51,67 @@ extern "C"
  * @property GREY_MAX
  * Maximum allowed value that #grey_code_t and #grey_int_t support.
  *
- * Can be altered with #GREY_UINTBITS.
+ * Can be increased with #GREY_UINTBITS.
+ */
+/**
+ * @property GREY_FMT
+ * Format specifier for `printf` and similar functions of the
+ * decimal integer representation of #grey_code_t and #grey_int_t.
+ *
+ * Usage example:
+ *
+ *     grey_code_t code = 0x80U;
+ *     printf("My Grey code is " GREY_FMT "!\n", code); // prints 128
+ */
+/**
+ * @property GREY_FMTx
+ * Format specifier for `printf` and similar functions of the
+ * hexadecimal lowercase integer representation of #grey_code_t and
+ * #grey_int_t.
+ *
+ * Usage example:
+ *
+ *     grey_code_t code = 0xF0U;
+ *     printf("My Grey code is " GREY_FMTx "!\n", code); // prints "f0"
+ */
+/**
+ * @property GREY_FMTX
+ * Format specifier for `printf` and similar functions of the
+ * hexadecimal uppercase integer representation of #grey_code_t and
+ * #grey_int_t.
+ *
+ * Usage example:
+ *
+ *     grey_code_t code = 0xF0U;
+ *     printf("My Grey code is " GREY_FMTX "!\n", code); // prints "F0"
  */
 #if (GREY_UINTBITS > 64)
 #error "Integers larger than  bits are not supported. Please set "
 "GREY_UINTBITS to a value in [0, ]."
 #elif (GREY_UINTBITS > 32)
 typedef uint64_t grey_code_t;
-#define GREY_MAX UINT64_MAX
+#define GREY_MAX ((uint64_t) UINT64_MAX)
+#define GREY_FMT PRIu64
+#define GREY_FMTx PRIx64
+#define GREY_FMTX PRIX64
 #elif (GREY_UINTBITS > 16)
 typedef uint32_t grey_code_t;
-#define GREY_MAX UINT32_MAX
+#define GREY_MAX ((uint32_t) UINT32_MAX)
+#define GREY_FMT PRIu32
+#define GREY_FMTx PRIx32
+#define GREY_FMTX PRIX32
 #elif (GREY_UINTBITS > 8)
 typedef uint16_t grey_code_t;
-#define GREY_MAX UINT16_MAX
+#define GREY_MAX ((uint16_t) UINT16_MAX)
+#define GREY_FMT PRIu16
+#define GREY_FMTx PRIx16
+#define GREY_FMTX PRIX16
 #elif (GREY_UINTBITS > 0)
 typedef uint8_t grey_code_t;
-#define GREY_MAX UINT8_MAX
+#define GREY_MAX ((uint8_t) UINT8_MAX)
+#define GREY_FMT PRIu8
+#define GREY_FMTx PRIx8
+#define GREY_FMTX PRIX8
 #else
 #error "Integers with 0 or less bits don't exist. Please set "
 "GREY_UINTBITS to a value in [0, ]."

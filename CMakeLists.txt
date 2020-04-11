@@ -49,7 +49,7 @@ set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} \
         -funroll-loops")
 
 include_directories(inc/)
-set(LIB_FILES src/greyco.c)
+set(LIB_FILES src/grey.c)
 include_directories(tst/ tst/atto/)
 set(TEST_FILES tst/test.c tst/atto/atto.c)
 

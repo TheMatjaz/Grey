@@ -6,7 +6,7 @@
  * @license BSD 3-clause license.
  */
 
-#include "greyco.h"
+#include "grey.h"
 
 grey_code_t inline grey_to(const grey_int_t binary)
 {

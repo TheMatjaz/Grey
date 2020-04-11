@@ -21,6 +21,10 @@ extern "C"
 /** Grey-encoded value, to distinguish them from binary values. */
 typedef uint64_t grey64_t;
 
+#define greyco64_add(grey, delta) greyco64_to(greyco64_from((grey)) + (delta))
+#define greyco64_incr(grey) greyco64_add((grey), 1)
+#define greyco64_decr(grey) greyco64_add((grey), -1)
+
 /**
  * Converts a regular binary unsigned integer to Grey code.
  *
@@ -36,33 +40,6 @@ grey64_t greyco64_to(uint64_t value);
  * @return binary value of the Grey code
  */
 uint64_t greyco64_from(grey64_t grey);
-
-/**
- * Fast incrementing of a Grey code by 1 (`grey++`).
- *
- * It is approximately 2x faster than converting it to binary, incrementing it
- * and converting it again to Grey code.
- *
- * @warning It does NOT overflow! Incrementing a #UINT64_MAX returns a
- * #UINT64_MAX.
- *
- * @param grey Grey-encoded value to increment
- * @return \p grey + 1
- */
-grey64_t greyco64_incr(grey64_t grey);
-
-/**
- * Fast decrementing of a Grey code by 1 (`grey--`).
- *
- * It is approximately 2x faster than converting it to binary, decrementing it
- * and converting it again to Grey code.
- *
- * @warning It does NOT underflow! Decrementing a 0 returns a 0.
- *
- * @param grey Grey-encoded value to decrement
- * @return \p grey - 1
- */
-grey64_t greyco64_decr(grey64_t grey);
 
 #ifdef __cplusplus
 }

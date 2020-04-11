@@ -10,7 +10,6 @@
 #include "atto/atto.h"
 #include <stdio.h>
 #include <inttypes.h>
-#include <stdlib.h>
 
 static void test_to_grey(void)
 {
@@ -127,74 +126,43 @@ static void test_benchmark(void)
     const uint64_t iterations = (uint64_t) 5e6;
     double start;
     double elapsed;
-    double faster;
-    uint64_t* results = malloc(iterations * sizeof(uint64_t));
 
     printf("Iterations: %"PRIu64"\n", iterations);
     start = current_time_micros();
     for (uint64_t i = 0; i < iterations; i++)
     {
-        results[i] = greyco64_to(i);
+        greyco64_to(i);
     }
     elapsed = current_time_micros() - start;
-    printf("Benchmark to-Grey.\tElapsed: %f s = %e/iteration\n",
+    printf("Benchmark   to-Grey. Elapsed: %f s = %e/iteration\n",
            elapsed, elapsed / iterations);
 
     start = current_time_micros();
     for (uint64_t i = 0; i < iterations; i++)
     {
-        results[i] = greyco64_from(i);
+        greyco64_from(i);
     }
     elapsed = current_time_micros() - start;
-    printf("Benchmark from-Grey.\tElapsed: %f s = %e/iteration\n",
+    printf("Benchmark from-Grey. Elapsed: %f s = %e/iteration\n",
            elapsed, elapsed / iterations);
 
     start = current_time_micros();
     for (uint64_t i = 0; i < iterations; i++)
     {
-        results[i] = greyco64_incr(i);
+        greyco64_incr(i);
     }
     elapsed = current_time_micros() - start;
-    printf("Benchmark incr-Grey.\tElapsed: %f s = %e/iteration\n",
+    printf("Benchmark incr-Grey. Elapsed: %f s = %e/iteration\n",
            elapsed, elapsed / iterations);
-    faster = elapsed;
 
     start = current_time_micros();
     for (uint64_t i = 0; i < iterations; i++)
     {
-        uint64_t tmp = greyco64_from(i);
-        tmp--;
-        results[i] = greyco64_to(tmp);
+        greyco64_decr(i);
     }
     elapsed = current_time_micros() - start;
-    printf("Benchmark manual-incr.\tElapsed: %f s = %e/iteration\n",
+    printf("Benchmark decr-Grey. Elapsed: %f s = %e/iteration\n",
            elapsed, elapsed / iterations);
-    printf("Fast increment is %6.2f%% faster than manual increment\n",
-           (1.0 - faster / elapsed) * 100);
-
-    start = current_time_micros();
-    for (uint64_t i = 0; i < iterations; i++)
-    {
-        results[i] = greyco64_decr(i);
-    }
-    elapsed = current_time_micros() - start;
-    printf("Benchmark decr-Grey.\tElapsed: %f s = %e/iteration\n",
-           elapsed, elapsed / iterations);
-    faster = elapsed;
-
-    start = current_time_micros();
-    for (uint64_t i = 0; i < iterations; i++)
-    {
-        uint64_t tmp = greyco64_from(i);
-        tmp++;
-        results[i] = greyco64_to(tmp);
-    }
-    elapsed = current_time_micros() - start;
-    printf("Benchmark manual-decr.\tElapsed: %f s = %e/iteration\n",
-           elapsed, elapsed / iterations);
-    printf("Fast decrement is %6.2f%% faster than manual decrement\n",
-           (1.0 - faster / elapsed) * 100);
-    free(results);
 }
 
 

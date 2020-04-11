@@ -17,12 +17,13 @@ static void test_max_and_print(void)
     printf("Grey max: %" GREY_FMT "\n", GREY_MAX);
     printf("Grey max hex: 0x%" GREY_FMTx "\n", GREY_MAX);
     printf("Grey max HEX: 0x%" GREY_FMTX "\n", GREY_MAX);
-    grey_code_t my_code = grey_to(42);
+    grey_code_t my_code = grey_to(10);
+    atto_eq(my_code, 15);
     printf("Int %u "
            "= Grey dec %" GREY_FMT
            " = Grey lowercase hex 0x%" GREY_FMTx
            " = Grey uppercase hex 0x%" GREY_FMTX "\n",
-           42, my_code, my_code, my_code);
+           10, my_code, my_code, my_code);
 
     grey_int_t x = 0;
     x--;

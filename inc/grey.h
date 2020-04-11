@@ -14,7 +14,9 @@ extern "C"
 {
 #endif
 
-/** Version of the grey.h API using semantic versioning. */
+/**
+ * Version of the grey.h API using semantic versioning.
+ */
 #define GREY_VERSION "1.0.0"
 
 #include <stdint.h>
@@ -35,7 +37,7 @@ extern "C"
  * integer) values.
  *
  * Defaults to 64 thus using `uint64_t` integers only, unless specified
- * otherwise at compile time,
+ * otherwise at compile time.
  */
 #ifndef GREY_UINTBITS
 #define GREY_UINTBITS 64
@@ -60,8 +62,8 @@ extern "C"
  *
  * Usage example:
  *
- *     grey_code_t code = 0x80U;
- *     printf("My Grey code is " GREY_FMT "!\n", code); // prints 128
+ *     grey_code_t code = 15U;
+ *     printf("My Grey code is " GREY_FMT "!\n", code); // prints 15
  */
 /**
  * @property GREY_FMTx
@@ -71,8 +73,8 @@ extern "C"
  *
  * Usage example:
  *
- *     grey_code_t code = 0xF0U;
- *     printf("My Grey code is " GREY_FMTx "!\n", code); // prints "f0"
+ *     grey_code_t code = 15;
+ *     printf("My Grey code is " GREY_FMTx "!\n", code); // prints "f"
  */
 /**
  * @property GREY_FMTX
@@ -82,8 +84,8 @@ extern "C"
  *
  * Usage example:
  *
- *     grey_code_t code = 0xF0U;
- *     printf("My Grey code is " GREY_FMTX "!\n", code); // prints "F0"
+ *     grey_code_t code = 15;
+ *     printf("My Grey code is " GREY_FMTX "!\n", code); // prints "F"
  */
 #if (GREY_UINTBITS == 64)
 typedef uint64_t grey_code_t;
@@ -132,7 +134,7 @@ typedef grey_code_t grey_int_t;
  *
  * @warning No checks are performed for overflows!
  * @param grey value to increment.
- * @return incremented Grey code = (grey+1).
+ * @return incremented Grey code = `grey+1`.
  */
 #define grey_incr(grey) grey_add((grey), 1)
 
@@ -141,7 +143,7 @@ typedef grey_code_t grey_int_t;
  *
  * @warning No checks are performed for underflows!
  * @param grey value to decrement.
- * @return decremented Grey code = (grey-1).
+ * @return decremented Grey code = `grey-1`.
  */
 #define grey_decr(grey) grey_add((grey), -1)
 
@@ -169,8 +171,9 @@ grey_int_t grey_from(grey_code_t grey);
  * - ASCII
  * - big endian (as humans would read and write the number)
  * - contains no spaces
- * - is null-terminated
- * - is at most #GREY_UINTBITS bytes in size (EXCLUDING null-terminator).
+ * - is **null-terminated**
+ * - is at most #GREY_UINTBITS bytes in size (**excluding** the
+ *   null-terminator).
  *
  * Example:
  *     `grey_binstr(str, 0x0E)` fills `str` with `"1110\0"` and returns `4`.
@@ -178,9 +181,9 @@ grey_int_t grey_from(grey_code_t grey);
  * Note: this is just a utility function, is not meant to be super-efficient.
  *
  * @param[out] str buffer of #GREY_UINTBITS+1 bytes (the "+1" is the space
- *             for the null-terminator.
+ *             for the null-terminator).
  * @param[in] grey value to encode.
- * @returns length of the binary string written into \p str EXCLUDING the
+ * @returns length of the binary string written into \p str **excluding** the
  *          null-terminator
  */
 uint8_t grey_binstr(char str[GREY_UINTBITS+1], grey_code_t grey);

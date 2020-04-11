@@ -39,9 +39,12 @@ set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} \
         -O3 -Werror -fomit-frame-pointer -march=native -mtune=native \
         -funroll-loops")
 
-set(LIB_FILES src/greyco.c inc/greyco.h)
+include_directories(inc/)
+set(LIB_FILES src/greyco.c)
 add_library(greyco SHARED ${LIB_FILES})
 add_library(staticgreyco STATIC ${LIB_FILES})
-set(TEST_FRAMEWORK tst/atto/atto.c tst/atto/atto.h)
-set(TEST_FILES tst/test.c tst/test.h)
+include_directories(tst/atto/)
+set(TEST_FRAMEWORK tst/atto/atto.c)
+include_directories(tst/)
+set(TEST_FILES tst/test.c)
 add_executable(test_greyco ${LIB_FILES} ${TEST_FRAMEWORK} ${TEST_FILES})

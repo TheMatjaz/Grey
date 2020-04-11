@@ -5,21 +5,25 @@
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-clause license.
  */
-#include "../inc/greyco.h"
 
-#define INCREMENT 1U
-#define DECREMENT 0U
+#include "greyco.h"
 
-grey64_t inline greyco64_to(const uint64_t binary)
+grey_code_t inline grey_to(const grey_int_t binary)
 {
     return binary ^ (binary >> 1U);
 }
 
-uint64_t greyco64_from(grey64_t grey)
+grey_int_t grey_from(grey_code_t grey)
 {
+#if (GREY_UINTBITS > 32)
     grey ^= grey >> 32U;
+#endif
+#if (GREY_UINTBITS > 16)
     grey ^= grey >> 16U;
+#endif
+#if (GREY_UINTBITS > 8)
     grey ^= grey >> 8U;
+#endif
     grey ^= grey >> 4U;
     grey ^= grey >> 2U;
     grey ^= grey >> 1U;

@@ -29,7 +29,7 @@ static void test_to_grey(void)
     atto_eq(0b1011, grey_to(13));
     atto_eq(0b1001, grey_to(14));
     atto_eq(0b1000, grey_to(15));
-    atto_eq(0x8000000000000000ULL, grey_to(0xFFFFFFFFFFFFFFFFULL));
+    atto_eq(0x80, grey_to(255));
 }
 
 static void test_from_grey(void)
@@ -50,7 +50,7 @@ static void test_from_grey(void)
     atto_eq(13, grey_from(0b1011));
     atto_eq(14, grey_from(0b1001));
     atto_eq(15, grey_from(0b1000));
-    atto_eq(0xFFFFFFFFFFFFFFFFULL, grey_from(0x8000000000000000ULL));
+    atto_eq(255, grey_from(0x80));
 }
 
 static void test_increment(void)
@@ -71,7 +71,7 @@ static void test_increment(void)
     atto_eq(grey_to(14), grey_incr(grey_to(13)));
     atto_eq(grey_to(15), grey_incr(grey_to(14)));
     atto_eq(grey_to(16), grey_incr(grey_to(15)));
-    atto_eq(GREY_MAX, grey_incr(grey_to(GREY_MAX - 1)));
+    atto_eq(grey_to(GREY_MAX), grey_incr(grey_to(GREY_MAX - 1)));
     atto_eq(0, grey_incr(grey_to(GREY_MAX)));
 }
 
@@ -97,83 +97,11 @@ static void test_decrement(void)
             grey_decr(grey_to(GREY_MAX)));
 }
 
-#ifdef WIN32
-// https://stackoverflow.com/questions/2349776/how-can-i-benchmark-c-code-easily
-#include <windows.h>
-static double current_time_micros(void)
-{
-    LARGE_INTEGER time;
-    LARGE_INTEGER frequency;
-    QueryPerformanceCounter(&time);
-    QueryPerformanceFrequency(&frequency);
-    return (double) time.QuadPart / (double) frequency.QuadPart;
-}
-#else
-#include <sys/time.h>
-#include <sys/resource.h>
-
-static double current_time_micros(void)
-{
-    struct timeval time;
-    struct timezone time_zone;
-    gettimeofday(&time, &time_zone);
-    return time.tv_sec + time.tv_usec * 1e-6;
-}
-
-#endif
-
-static void test_benchmark(void)
-{
-    const uint64_t iterations = (uint64_t) 5e6;
-    double start;
-    double elapsed;
-    uint64_t i;
-
-    printf("Iterations: %" PRIu64 "\n", iterations);
-    start = current_time_micros();
-    for (i = 0; i < iterations; i++)
-    {
-        grey_to(i);
-    }
-    elapsed = current_time_micros() - start;
-    printf("Benchmark   to-Grey. Elapsed: %f s = %e/iteration\n",
-           elapsed, elapsed / iterations);
-
-    start = current_time_micros();
-    for (i = 0; i < iterations; i++)
-    {
-        grey_from(i);
-    }
-    elapsed = current_time_micros() - start;
-    printf("Benchmark from-Grey. Elapsed: %f s = %e/iteration\n",
-           elapsed, elapsed / iterations);
-
-    start = current_time_micros();
-    for (i = 0; i < iterations; i++)
-    {
-        grey_incr(i);
-    }
-    elapsed = current_time_micros() - start;
-    printf("Benchmark incr-Grey. Elapsed: %f s = %e/iteration\n",
-           elapsed, elapsed / iterations);
-
-    start = current_time_micros();
-    for (i = 0; i < iterations; i++)
-    {
-        grey_decr(i);
-    }
-    elapsed = current_time_micros() - start;
-    printf("Benchmark decr-Grey. Elapsed: %f s = %e/iteration\n",
-           elapsed, elapsed / iterations);
-}
-
-
 int main(void)
 {
     test_to_grey();
     test_from_grey();
     test_increment();
     test_decrement();
-    test_benchmark();
     return atto_at_least_one_fail;
 }

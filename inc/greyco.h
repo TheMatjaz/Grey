@@ -60,10 +60,10 @@ typedef uint64_t grey_code_t;
 #elif (GREY_UINTBITS > 16)
 typedef uint32_t grey_code_t;
 #define GREY_MAX UINT32_MAX
-#elif(GREY_UINTBITS > 8)
+#elif (GREY_UINTBITS > 8)
 typedef uint16_t grey_code_t;
 #define GREY_MAX UINT16_MAX
-#elif(GREY_UINTBITS > 0)
+#elif (GREY_UINTBITS > 0)
 typedef uint8_t grey_code_t;
 #define GREY_MAX UINT8_MAX
 #else

@@ -29,3 +29,24 @@ grey_int_t grey_from(grey_code_t grey)
     grey ^= grey >> 1U;
     return grey;
 }
+
+uint8_t grey_binstr(char* str, const grey_code_t grey)
+{
+    uint8_t len = 0;
+    uint_fast8_t found_a_1 = 0;
+    for (int_fast8_t i = GREY_UINTBITS - 1; i >= 0; i--)
+    {
+        const uint_fast8_t bit = (grey >> (unsigned int) i) & 1U;
+        if (bit)
+        {
+            found_a_1 = i;
+            str[len++] = '1';
+        }
+        else if (found_a_1)
+        {
+            str[len++] = '0';
+        }
+    }
+    str[len] = '\0';
+    return len;
+}

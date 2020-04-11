@@ -115,6 +115,36 @@ static void test_decrement(void)
             grey_decr(grey_to(GREY_MAX)));
 }
 
+static void test_binstr(void)
+{
+    char str[GREY_UINTBITS + 1];
+    uint8_t len;
+    len = grey_binstr(str, 0x0E);
+    atto_eq(len, 4);
+    atto_streq(str, "1110", GREY_UINTBITS);
+    len = grey_binstr(str, 0x01);
+    atto_eq(len, 1);
+    atto_streq(str, "1", GREY_UINTBITS);
+    len = grey_binstr(str, 0x10);
+    atto_eq(len, 5);
+    atto_streq(str, "10000", GREY_UINTBITS);
+    len = grey_binstr(str, GREY_MAX);
+    atto_eq(len, GREY_UINTBITS);
+#if (GREY_UINTBITS == 64)
+    atto_streq(
+            str,
+            "1111111111111111111111111111111111111111111111111111111111111111",
+            GREY_UINTBITS);
+#elif (GREY_UINTBITS == 32)
+    atto_streq(str, "11111111111111111111111111111111", GREY_UINTBITS);
+#elif (GREY_UINTBITS == 16)
+        atto_streq(str, "1111111111111111", GREY_UINTBITS);
+#else
+        atto_streq(str, "11111111", GREY_UINTBITS);
+#endif
+
+}
+
 int main(void)
 {
     test_max_and_print();
@@ -122,5 +152,6 @@ int main(void)
     test_from_grey();
     test_increment();
     test_decrement();
+    test_binstr();
     return atto_at_least_one_fail;
 }

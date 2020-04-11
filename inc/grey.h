@@ -25,10 +25,10 @@ extern "C"
  * Defines the domain in bits of the Grey codes. In other words what is the
  * max value a Grey code could hold.
  *
- * - Set it to 64, ..., 33 to convert `uint64_t` values to and from Grey codes.
- * - Set it to 32, ..., 17 to convert `uint32_t` values to and from Grey codes.
- * - Set it to 16, ...,  9 to convert `uint16_t` values to and from Grey codes.
- * - Set it to  8, ...,  1 to convert `uint8_t`  values to and from Grey codes.
+ * - Set it to 64 to convert `uint64_t` values to and from Grey codes.
+ * - Set it to 32 to convert `uint32_t` values to and from Grey codes.
+ * - Set it to 16 to convert `uint16_t` values to and from Grey codes.
+ * - Set it to  8 to convert `uint8_t`  values to and from Grey codes.
  *
  * #grey_code_t and #grey_int_t will automatically be defined as the proper
  * integer types to hold the Grey-encoded values and their binary (regular
@@ -85,36 +85,32 @@ extern "C"
  *     grey_code_t code = 0xF0U;
  *     printf("My Grey code is " GREY_FMTX "!\n", code); // prints "F0"
  */
-#if (GREY_UINTBITS > 64)
-#error "Integers larger than  bits are not supported. Please set "
-"GREY_UINTBITS to a value in [0, ]."
-#elif (GREY_UINTBITS > 32)
+#if (GREY_UINTBITS == 64)
 typedef uint64_t grey_code_t;
 #define GREY_MAX ((uint64_t) UINT64_MAX)
 #define GREY_FMT PRIu64
 #define GREY_FMTx PRIx64
 #define GREY_FMTX PRIX64
-#elif (GREY_UINTBITS > 16)
+#elif (GREY_UINTBITS == 32)
 typedef uint32_t grey_code_t;
 #define GREY_MAX ((uint32_t) UINT32_MAX)
 #define GREY_FMT PRIu32
 #define GREY_FMTx PRIx32
 #define GREY_FMTX PRIX32
-#elif (GREY_UINTBITS > 8)
+#elif (GREY_UINTBITS == 16)
 typedef uint16_t grey_code_t;
 #define GREY_MAX ((uint16_t) UINT16_MAX)
 #define GREY_FMT PRIu16
 #define GREY_FMTx PRIx16
 #define GREY_FMTX PRIX16
-#elif (GREY_UINTBITS > 0)
+#elif (GREY_UINTBITS == 8)
 typedef uint8_t grey_code_t;
 #define GREY_MAX ((uint8_t) UINT8_MAX)
 #define GREY_FMT PRIu8
 #define GREY_FMTx PRIx8
 #define GREY_FMTX PRIX8
 #else
-#error "Integers with 0 or less bits don't exist. Please set "
-"GREY_UINTBITS to a value in [0, ]."
+#error "Please set GREY_UINTBITS to a value in {8, 16, 32, 64}."
 #endif
 
 /** Binary value (regular integer), of the same size as Grey-coded values. */
@@ -164,6 +160,30 @@ grey_code_t grey_to(grey_int_t value);
  * @return binary value (regular integer) of the Grey code
  */
 grey_int_t grey_from(grey_code_t grey);
+
+
+/**
+ * Fills a string with the Grey code in binary representation.
+ *
+ * The representation is:
+ * - ASCII
+ * - big endian (as humans would read and write the number)
+ * - contains no spaces
+ * - is null-terminated
+ * - is at most #GREY_UINTBITS bytes in size (EXCLUDING null-terminator).
+ *
+ * Example:
+ *     `grey_binstr(str, 0x0E)` fills `str` with `"1110\0"` and returns `4`.
+ *
+ * Note: this is just a utility function, is not meant to be super-efficient.
+ *
+ * @param[out] str buffer of #GREY_UINTBITS+1 bytes (the "+1" is the space
+ *             for the null-terminator.
+ * @param[in] grey value to encode.
+ * @returns length of the binary string written into \p str EXCLUDING the
+ *          null-terminator
+ */
+uint8_t grey_binstr(char str[GREY_UINTBITS+1], grey_code_t grey);
 
 #ifdef __cplusplus
 }

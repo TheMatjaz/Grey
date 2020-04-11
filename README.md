@@ -21,34 +21,34 @@ Usage example
 ----------------------------------------
 
 ```c
-    // Convert to Grey code
-    grey_code_t my_code = grey_to(10); // my_code is now 0b1111 = 0x0F = 15
-    
-    // Convert from Grey code
-    grey_int_t my_value = grey_from(my_code);  // my_value is now 10 again
-    
-    // Handy macro for incrementing Grey codes
-    grey_code_t my_code = grey_to(103);  // my_code is now 84, representing 103
-    my_code = grey_incr(my_value);  // my_code is now 92, representing 104
-    my_value = grey_from(my_code);  // my_value is now 103
-    
-    // Or for decrementing
-    my_code = grey_decr(85);
-    
-    // Or for custom addition/subtraction (may be unsafe!)
-    my_code = grey_add(85, 5);
-    
-    // Printing format
-    my_code = grey_to(42);
-    printf("Int %u "
-           "= Grey decimal %" GREY_FMT
-           " = Grey lowercase hex 0x%" GREY_FMTx
-           " = Grey uppercase hex 0x%" GREY_FMTX "\n",
-           42, my_code, my_code, my_code);
+// Convert to Grey code
+grey_code_t my_code = grey_to(10); // my_code is now 0b1111 = 0x0F = 15
 
-    // Converting to binary string
-    char binstr[GREY_UINTBITS + 1];
-    uint8_t len = grey_binstr(binstr, 7);  // str now contains "111\0", len is 3
+// Convert from Grey code
+grey_int_t my_value = grey_from(my_code);  // my_value is now 10 again
+
+// Handy macro for incrementing Grey codes
+grey_code_t my_code = grey_to(103);  // my_code is now 84, representing 103
+my_code = grey_incr(my_value);  // my_code is now 92, representing 104
+my_value = grey_from(my_code);  // my_value is now 103
+
+// Or for decrementing
+my_code = grey_decr(85);
+
+// Or for custom addition/subtraction (may be unsafe!)
+my_code = grey_add(85, 5);
+
+// Printing format
+my_code = grey_to(42);
+printf("Int %u "
+       "= Grey decimal %" GREY_FMT
+       " = Grey lowercase hex 0x%" GREY_FMTx
+       " = Grey uppercase hex 0x%" GREY_FMTX "\n",
+       42, my_code, my_code, my_code);
+
+// Converting to binary string
+char binstr[GREY_UINTBITS + 1];
+uint8_t len = grey_binstr(binstr, 7);  // str now contains "111\0", len is 3
 ```
 
 You can also check the `tst/test.c` file for more examples.

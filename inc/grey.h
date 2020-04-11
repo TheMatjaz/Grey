@@ -1,6 +1,16 @@
 /**
  * @file
- * @brief
+ *
+ * Grey codes a.k.a. Reflected binary codes, made simple.
+ *
+ * This is a tiny tiny C99 library that converts unsigned integers of any size
+ * from and to Grey codes.
+ *
+ * By default, the library will operate on `uint64_t` integers for conversions
+ * from/to Grey codes. If you prefer using smaller integer (but also limit the
+ * domain of the Grey codes and their values), redefine the macro
+ * `GREY_UINTBITS` to 32, 16 or 8 instead of 64.
+ *
  * @copyright Copyright © 2020, Matjaž Guštin <dev@matjaz.it>
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-clause license.

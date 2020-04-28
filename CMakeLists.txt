@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(Grey
-        VERSION 0.1.0
+        VERSION 1.0.0
         LANGUAGES C
         DESCRIPTION
         "Simple Grey codes a.k.a. Reflected Binary Codes library.")
